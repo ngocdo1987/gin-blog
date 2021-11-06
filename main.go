@@ -1,15 +1,29 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"blog/api/controller"
+	"blog/api/repository"
+	"blog/api/routes"
+	"blog/api/service"
+	"blog/infrastructure"
+	"blog/models"
+	"os"
 )
 
+func init() {
+	infrastructure.LoadEnv()
+}
+
 func main() {
-	router := gin.Default() //new gin router initialization
-	router.GET("/", func(context *gin.Context) {
-		context.JSON(http.StatusOK, gin.H{"data": "Hello World !"})
-	}) // first endpoint returns Hello World
-	router.Run(":8888") //running application, Default port is 8080
+
+	router := infrastructure.NewGinRouter()                     //router has been initialized and configured
+	db := infrastructure.NewDatabase()                          // databse has been initialized and configured
+	postRepository := repository.NewPostRepository(db)          // repository are being setup
+	postService := service.NewPostService(postRepository)       // service are being setup
+	postController := controller.NewPostController(postService) // controller are being set up
+	postRoute := routes.NewPostRoute(postController, router)    // post routes are initialized
+	postRoute.Setup()                                           // post routes are being setup
+
+	db.DB.AutoMigrate(&models.Post{})              // migrating Post model to datbase table
+	router.Gin.Run(":" + os.Getenv("SERVER_PORT")) //server started on 8000 port
 }
