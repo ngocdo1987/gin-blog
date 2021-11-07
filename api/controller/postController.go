@@ -72,23 +72,23 @@ func (p *PostController) AddPost(ctx *gin.Context) {
 }
 
 //GetPost : get post by id
-func (p *PostController) GetPost(c *gin.Context) {
-	idParam := c.Param("id")
+func (p *PostController) GetPost(ctx *gin.Context) {
+	idParam := ctx.Param("id")
 	id, err := strconv.ParseInt(idParam, 10, 64) //type conversion string to int64
 	if err != nil {
-		util.ErrorJSON(c, http.StatusBadRequest, "id invalid")
+		util.ErrorJSON(ctx, http.StatusBadRequest, "id invalid")
 		return
 	}
 	var post models.Post
 	post.ID = id
 	foundPost, err := p.service.Find(post)
 	if err != nil {
-		util.ErrorJSON(c, http.StatusBadRequest, "Error Finding Post")
+		util.ErrorJSON(ctx, http.StatusBadRequest, "Error Finding Post")
 		return
 	}
 	response := foundPost.ResponseMap()
 
-	c.JSON(http.StatusOK, &util.Response{
+	ctx.JSON(http.StatusOK, &util.Response{
 		Success: true,
 		Message: "Result set of Post",
 		Data:    &response})
@@ -96,23 +96,23 @@ func (p *PostController) GetPost(c *gin.Context) {
 }
 
 //DeletePost : Deletes Post
-func (p *PostController) DeletePost(c *gin.Context) {
-	idParam := c.Param("id")
+func (p *PostController) DeletePost(ctx *gin.Context) {
+	idParam := ctx.Param("id")
 	id, err := strconv.ParseInt(idParam, 10, 64) //type conversion string to uint64
 	if err != nil {
-		util.ErrorJSON(c, http.StatusBadRequest, "id invalid")
+		util.ErrorJSON(ctx, http.StatusBadRequest, "id invalid")
 		return
 	}
 	err = p.service.Delete(id)
 
 	if err != nil {
-		util.ErrorJSON(c, http.StatusBadRequest, "Failed to delete Post")
+		util.ErrorJSON(ctx, http.StatusBadRequest, "Failed to delete Post")
 		return
 	}
 	response := &util.Response{
 		Success: true,
 		Message: "Deleted Sucessfully"}
-	c.JSON(http.StatusOK, response)
+	ctx.JSON(http.StatusOK, response)
 }
 
 //UpdatePost : get update by id
