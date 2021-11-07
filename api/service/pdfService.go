@@ -29,5 +29,7 @@ func (p PdfService) GeneratePdf() error {
 		return err
 	}
 	pdf.Cell(nil, "您好")
-	return pdf.WritePdf("static/pdf/chinese.pdf")
+	pdf.WritePdf("static/pdf/chinese.pdf")
+
+	return nil
 }

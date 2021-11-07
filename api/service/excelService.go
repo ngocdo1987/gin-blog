@@ -21,5 +21,7 @@ func (e ExcelService) WriteExcel() error {
 	// Set active sheet of the workbook.
 	f.SetActiveSheet(index)
 	// Save spreadsheet by the given path.
-	return f.SaveAs("static/excel/write.xlsx")
+	f.SaveAs("static/excel/write.xlsx")
+
+	return nil
 }

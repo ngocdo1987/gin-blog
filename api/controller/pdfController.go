@@ -29,6 +29,6 @@ func (p PdfController) Index(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &util.Response{
 		Success: true,
 		Message: "Successfully Generate PDF",
-		Data:    "",
+		//Data:    err,
 	})
 }

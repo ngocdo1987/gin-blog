@@ -29,6 +29,6 @@ func (e ExcelController) WriteExcel(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &util.Response{
 		Success: true,
 		Message: "Successfully Generate Excel",
-		Data:    "",
+		//Data:    "",
 	})
 }
