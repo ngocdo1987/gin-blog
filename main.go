@@ -17,7 +17,7 @@ func init() {
 func main() {
 
 	router := infrastructure.NewGinRouter() //router has been initialized and configured
-	db := infrastructure.NewDatabase()      // databse has been initialized and configured
+	db := infrastructure.NewDatabase()      // database has been initialized and configured
 
 	// Post APIs setup
 	postRepository := repository.NewPostRepository(db)          // repository are being setup
@@ -31,6 +31,12 @@ func main() {
 	pdfController := controller.NewPdfController(pdfService)
 	pdfRoute := routes.NewPdfRoute(pdfController, router)
 	pdfRoute.Setup()
+
+	// Excel APIs setup
+	excelService := service.NewExcelService()
+	excelController := controller.NewExcelController(excelService)
+	excelRoute := routes.NewExcelRoute(excelController, router)
+	excelRoute.Setup()
 
 	db.DB.AutoMigrate(&models.Post{})              // migrating Post model to datbase table
 	router.Gin.Run(":" + os.Getenv("SERVER_PORT")) //server started on 8000 port

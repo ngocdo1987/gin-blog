@@ -31,10 +31,10 @@ func (p PostController) GetPosts(ctx *gin.Context) {
 	data, total, err := p.service.FindAll(posts, keyword)
 
 	if err != nil {
-		util.ErrorJSON(ctx, http.StatusBadRequest, "Failed to find questions")
+		util.ErrorJSON(ctx, http.StatusBadRequest, "Failed to find posts")
 		return
 	}
-	respArr := make([]map[string]interface{}, 0, 0)
+	respArr := make([]map[string]interface{}, 0)
 
 	for _, n := range *data {
 		resp := n.ResponseMap()
