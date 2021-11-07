@@ -38,6 +38,11 @@ func main() {
 	excelRoute := routes.NewExcelRoute(excelController, router)
 	excelRoute.Setup()
 
+	// CSV APIs setup
+	csvController := controller.NewCsvController()
+	csvRoute := routes.NewCsvRoute(csvController, router)
+	csvRoute.Setup()
+
 	db.DB.AutoMigrate(&models.Post{})              // migrating Post model to datbase table
 	router.Gin.Run(":" + os.Getenv("SERVER_PORT")) //server started on 8000 port
 }
